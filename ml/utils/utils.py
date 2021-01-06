@@ -159,21 +159,21 @@ class FeatureExtractor:
     """
     def __init__(self, data: pd.DataFrame, flist: list):
         """
-            Input : pandas.DataFrame, feature list to drop
+            Input : pandas.DataFrame, feature list to select
             Output : X_train, X_test, y_train, y_test according to sklearn.model_selection.train_test_split
         """
-        print("FeatureExtractor intialisation")
+        print("FeatureExtractor initialization...")
         self.X_train, self.X_test, self.y_train, self.y_test = None,None,None,None
         self.data = data
         self.flist = flist
-        print("intialisation done")
+        print("Intialisation done !\n")
 
     def extractor(self):
-        print("extracting unwanted columns")
+        print("Extracting selected columns...")
         for col in self.flist:
             if col in self.data:
                 self.df.drop(col, axis=1, inplace=True)
-        print("done extracting unwanted columns")
+        print("Selected columns extracted ! \n")
 
     def splitting(self, size:float,rng:int, y:str):
         print("splitting dataset for train and test")
