@@ -1,7 +1,22 @@
-from .utils.utils import DataHandler, FeatureRecipe, FeatureExtractor
+from utils.utils import DataHandling, FeatureRecipe, FeatureExtractor, ModelBuilder
 
-def DataManager(d:DataHandler=None, fr: FeatureRecipe=None, fe:FeatureExtractor=None):
+def DataManager(dh:DataHandling=None, fr:FeatureRecipe=None, fe:FeatureExtractor=None):
     """
-        Fonction qui lie les 3 premières classes de la pipeline et qui return FeatureExtractor.split(0.1)
+        Function linking the 3 first classes of the pipeline
     """
-    pass
+    # Columns to keep
+    klist=['Popularity','Year','HP','Price']
+
+    dh = DataHandling()
+    dh.get_data()
+    fr = FeatureRecipe(dh.data)
+    fr.prepare_data(0.3)
+
+    fe = FeatureExtractor(fr.data,klist)
+    return fe.split_data(0.1)
+
+X_train, X_test, y_train, y_test = DataManager()
+m = ModelBuilder() 
+m.train(X_train, y_train)
+m.print_accuracy(X_test,y_test)
+m.save_model('.')

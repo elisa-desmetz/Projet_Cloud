@@ -1,0 +1,12 @@
+fastapi
+gunicorn
+uvicorn
+joblib
+aiofiles
+jinja2
+python-multipart
+pandas
+numpy
+sklearn
+plotly
+matplotlib

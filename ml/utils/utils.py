@@ -157,75 +157,82 @@ class FeatureExtractor:
     """
     Feature Extractor class
     """
-    def __init__(self, data: pd.DataFrame, flist: list):
+    def __init__(self, data: pd.DataFrame, keep_list: list):
         """
-            Input : pandas.DataFrame, feature list to select
+            Input : pandas.DataFrame, features list to keep
             Output : X_train, X_test, y_train, y_test according to sklearn.model_selection.train_test_split
         """
         print("FeatureExtractor initialization...")
         self.X_train, self.X_test, self.y_train, self.y_test = None,None,None,None
         self.data = data
-        self.flist = flist
-        print("Intialisation done !\n")
+        self.klist = keep_list
+        print("Intialization done !\n")
 
     def extractor(self):
-        print("Extracting selected columns...")
-        for col in self.flist:
-            if col in self.data:
-                self.df.drop(col, axis=1, inplace=True)
+        print("Extracting selected columns... ")
+        self.data=self.data[self.klist]
         print("Selected columns extracted ! \n")
 
     def splitting(self, size:float,rng:int, y:str):
-        print("splitting dataset for train and test")
+        """
+            size : part of the testing set, between 0 and 1
+            rng : randomizer for the splitting
+            y : result feature
+        """
+        print("Splitting dataset in training and testing sets...")
         x = self.data.loc[:,self.data.columns != y]
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(x, self.data[y], test_size=size, random_state=rng)
-        print("splitting done")
+        print("Splitting done !\n")
 
-    def extract_data(self):
+    def split_data(self,split:float):
         self.extractor()
-        self.splitting(0.3,42,'FEATURE')
-        print("done processing Feature Extractor")
+        self.splitting(split,42,'Price')
+        print("FeatureExtractor processing done !\n")
         return self.X_train, self.X_test, self.y_train, self.y_test
 
+from joblib import dump,load
 
 class ModelBuilder:
     """
         Training and printing machine learning model
     """
-    def __init__(self, model_path: str = None, save: bool = None):
+    def __init__(self, model_path:str=None, save:bool=None):
 
         print("ModelBuilder initialization...")
         self.model_path = model_path
         self.save = save
-        self.line_reg = LinearRegression()
+        self.reg = RandomForestRegressor()
         print ("Initialization done !")
 
     def train(self, X, y):
-        self.line_reg.fit(X,y)
+        print("Training the algorithm...")
+        self.reg.fit(X,y)
+        print("Algorithm trained !")
+
 
     def __repr__(self):
         pass
 
-    def predict_test(self, X) -> np.ndarray:
-        # on test sur une ligne
-        return self.line_reg.predict(X)
+    def predict_test(self, X) -> np.ndarray: 
+        return self.reg.predict(X.iloc[:1])
 
     def save_model(self, path:str):
-
-        #with the format : 'model_{}_{}'.format(date)
-        #joblib.dump(self, path, 3)
-        pass
+        print('Saving file...')
+        dump(self.reg, '{}/model.joblib'.format(path))
+        self.save = True
+        print('File saved !')
 
     def predict_from_dump(self, X) -> np.ndarray:
-        pass
+        return self.reg.predict(X)
 
     def print_accuracy(self,X_test,y_test):
-        self.line_reg.predict(X_test)
-        self.line_reg.score(X_test,y_test)*100
+        score=self.reg.score(X_test,y_test)*100
+        print('Regression got an accuracy of {}%'.format(score))
 
     def load_model(self):
+        print('Loading file...')
         try:
-            #load model
-            pass
+            self.reg = joblib.load("{}/model.joblib".format(self.path))
+            print("File loaded !")
         except:
-            pass
+            print("File not found !")
