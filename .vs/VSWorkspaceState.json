@@ -4,9 +4,10 @@
     "\\ml",
     "\\ml\\static",
     "\\ml\\static\\data",
+    "\\ml\\static\\img",
     "\\ml\\templates",
     "\\ml\\utils"
   ],
-  "SelectedNode": "\\ml\\utils\\utils.py",
+  "SelectedNode": "\\main.py",
   "PreviewInSolutionExplorer": false
 }
