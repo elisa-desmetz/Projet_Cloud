@@ -30,7 +30,7 @@
                 <form action={{url_for('predict')}} method="POST">
                     <div class="form-group">
                         <label for="pop-index" class="form-label">Popularity index : <span id="range-pop"></span></label>
-                        <input type="range" class="form-range" id="pop-index">
+                        <input type="range" class="form-range" min="0" max="6000" step="10" id="pop-index">
                     </div>
                     <!-- Script JS pour afficher la valeur du slider -->
                     <script>
@@ -44,7 +44,7 @@
                     </script>
                     <div class="form-group">
                         <label for="hp-index" class="form-label">Popularity index : <span id="range-hp"></span></label>
-                        <input type="range" class="form-range" id="hp-index">
+                        <input type="range" class="form-range" min="50" max="1000" step="50" id="hp-index">
                     </div>
                     <!-- Script JS pour afficher la valeur du slider -->
                     <script>
@@ -58,7 +58,7 @@
                     </script>
                     <div class="form-group">
                         <label for="date-index" class="form-label">Popularity index : <span id="range-date"></span></label>
-                        <input type="range" class="form-range" id="date-index">
+                        <input type="range" class="form-range" min="1990" max="2020" step="1" id="date-index">
                     </div>
                     <!-- Script JS pour afficher la valeur du slider -->
                     <script>
